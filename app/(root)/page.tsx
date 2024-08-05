@@ -5,7 +5,7 @@ import { Footer } from "@/components/layouts/LandingPage/Footer";
 
 export default function Home() {
   return (
-    <main className="p-4">
+    <main className="p-4 bg-black">
       <LandingNavbar />
       <HeroSection />
       <Footer />
