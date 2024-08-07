@@ -25,6 +25,9 @@ import { Loader } from "@/components/layouts/Loader/Loader";
 // import { UserAvatar } from "@/components/layouts/User-avatar/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { Card, CardFooter } from "@/components/ui/card";
+import ImageEditor from "@/components/layouts/ImageEditor/ImageEditor";
+import { useStoreModal } from "@/hooks/use-store-modal";
+import { Modal } from "@/components/ui/modal";
 
 const DownloadedImages = [
   "/Images/cat1.jpg",
@@ -38,7 +41,10 @@ const DownloadedImages = [
 const ImageGenerationPage = () => {
 
   const router = useRouter();
+  const storeModal = useStoreModal();
   const [photos, setPhotos] = useState<string[]>([]);
+  const [editImage, setEditImage] = useState<string>("");
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -208,7 +214,10 @@ const ImageGenerationPage = () => {
                       <Download className="h-4 w-4 mr-2" />
                       Download
                     </Button>
-                    <Button onClick={() => window.open(photo)} variant="secondary" className="w-[30%]">
+                    <Button onClick={() => {
+                      setEditImage(photo)
+                      storeModal.isOpen = true
+                    }} variant="secondary" className="w-[30%]">
                       <FiEdit className="h-4 w-4 mr-2" />
                       Edit
                     </Button>
@@ -219,6 +228,14 @@ const ImageGenerationPage = () => {
           </div>
         </div>
       </div>
+      <Modal
+        title={"Edit Image"}
+        description={"Edit Your Image"}
+        isOpen={storeModal.isOpen}
+        onClose={storeModal.onClose}
+      >
+        <ImageEditor backgroundImageUrl={editImage} />
+      </Modal>
     </>
   )
 }
