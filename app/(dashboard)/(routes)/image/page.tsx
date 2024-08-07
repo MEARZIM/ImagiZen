@@ -1,6 +1,5 @@
 "use client"
 import * as z from "zod";
-import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Download, ImageIcon } from 'lucide-react';
@@ -9,16 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormItem,
-  FormLabel,
   FormControl,
-  FormDescription,
-  FormMessage,
   FormField,
 } from '@/components/ui/form';
 import { toast } from "react-hot-toast";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Image from "next/image";
+import { FiEdit } from "react-icons/fi";
 
 import { formSchema, amountOptions, resolutionOptions } from "./constant"
 import Heading from '@/components/layouts/Heading/Heading'
@@ -29,6 +25,15 @@ import { Loader } from "@/components/layouts/Loader/Loader";
 // import { UserAvatar } from "@/components/layouts/User-avatar/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { Card, CardFooter } from "@/components/ui/card";
+
+const DownloadedImages = [
+  "/Images/cat1.jpg",
+  "/Images/cat2.jpg",
+  "/Images/cat3.webp",
+  "/Images/cat4.jpg",
+  "/Images/dogs1.jpg",
+  "/Images/dogs2.jpg",
+]
 
 const ImageGenerationPage = () => {
 
@@ -47,17 +52,14 @@ const ImageGenerationPage = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-
+    console.log(values);
     try {
 
-      setPhotos([]);
+      const amount = parseInt(values.amount, 10);
 
+      const selectedPhotos = DownloadedImages.slice(0, amount);
 
-      const response = await axios.post('/api/image', values);
-
-      const urls = response.data.map((image: { url: string }) => image.url);
-
-      setPhotos(urls)
+      setPhotos(selectedPhotos);
 
       form.reset();
 
@@ -130,7 +132,7 @@ const ImageGenerationPage = () => {
                             {amountOptions.map((options) => (
                               <SelectItem
                                 key={options.value}
-                                value={options.value}
+                                value={options.value.toString()}
                               >
                                 {options.label}
                               </SelectItem>
@@ -201,10 +203,14 @@ const ImageGenerationPage = () => {
                     />
 
                   </div>
-                  <CardFooter className="p-2">
-                    <Button onClick={() => window.open(photo)} variant="secondary" className="w-full">
+                  <CardFooter className="p-2 gap-2">
+                    <Button onClick={() => window.open(photo)} variant="secondary" className="w-[70%]">
                       <Download className="h-4 w-4 mr-2" />
                       Download
+                    </Button>
+                    <Button onClick={() => window.open(photo)} variant="secondary" className="w-[30%]">
+                      <FiEdit className="h-4 w-4 mr-2" />
+                      Edit
                     </Button>
                   </CardFooter>
                 </Card>
