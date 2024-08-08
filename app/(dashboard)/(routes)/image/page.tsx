@@ -26,6 +26,7 @@ import { Card, CardFooter } from "@/components/ui/card";
 import ImageEditor from "@/components/layouts/ImageEditor/ImageEditor";
 import { useStoreModal } from "@/hooks/use-store-modal";
 import { Modal } from "@/components/ui/modal";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const DownloadedImages = [
   "/Images/cat1.jpg",
@@ -40,6 +41,7 @@ const ImageGenerationPage = () => {
 
   const router = useRouter();
   const storeModal = useStoreModal();
+  const proModal = useProModal();
   const [photos, setPhotos] = useState<string[]>([]);
   const [editImage, setEditImage] = useState<string>("");
 
@@ -56,7 +58,7 @@ const ImageGenerationPage = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    // console.log(values);
     try {
 
       await axios.post('/api/image', values);
@@ -71,10 +73,9 @@ const ImageGenerationPage = () => {
 
     } catch (error: any) {
       if (error?.response?.status === 403) {
-
-      } else {
         toast.error("Free trial is expired");
-      }
+        proModal.onOpen();
+      } 
     } finally {
       router.refresh();
     }
