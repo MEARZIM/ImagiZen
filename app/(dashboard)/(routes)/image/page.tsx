@@ -19,10 +19,7 @@ import { FiEdit } from "react-icons/fi";
 import { formSchema, amountOptions, resolutionOptions } from "./constant"
 import Heading from '@/components/layouts/Heading/Heading'
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Loader } from "@/components/layouts/Loader/Loader";
-// import { BotAvatar } from "@/components/layouts/bot-avatar/BotAvatar";
-// import { UserAvatar } from "@/components/layouts/User-avatar/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { Card, CardFooter } from "@/components/ui/card";
 import ImageEditor from "@/components/layouts/ImageEditor/ImageEditor";

@@ -13,12 +13,14 @@ import {
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog"
+import { Badge } from "./badge";
 
 interface ModalProps {
     title: string;
     description: string;
     isOpen: boolean;
     onClose: () => void;
+    badge?: string;
     children: React.ReactNode;
 }
 
@@ -27,6 +29,7 @@ export const Modal: React.FC<ModalProps> = ({
     description,
     isOpen,
     onClose,
+    badge,
     children
 }) => {
     const onChange = (open: boolean) => {
@@ -41,7 +44,14 @@ export const Modal: React.FC<ModalProps> = ({
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
-                            {title}
+                            <div className="flex items-center gap-x-2 py-1">
+                                {badge && (
+                                    <Badge className="uppercase text-sm py-1 bg-gradient-to-r from-blue-800 to-purple-700" >
+                                        {badge}
+                                    </Badge>
+                                )}
+                                {title}
+                            </div>
                         </DialogTitle>
                         <DialogDescription>
                             {description}
