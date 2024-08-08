@@ -1,5 +1,6 @@
 "use client"
 import * as z from "zod";
+import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Download, ImageIcon } from 'lucide-react';
@@ -58,6 +59,8 @@ const ImageGenerationPage = () => {
     console.log(values);
     try {
 
+      await axios.post('/api/image', values);
+
       const amount = parseInt(values.amount, 10);
 
       const selectedPhotos = DownloadedImages.slice(0, amount);
@@ -70,7 +73,7 @@ const ImageGenerationPage = () => {
       if (error?.response?.status === 403) {
 
       } else {
-        toast.error("Something went wrong.");
+        toast.error("Free trial is expired");
       }
     } finally {
       router.refresh();
