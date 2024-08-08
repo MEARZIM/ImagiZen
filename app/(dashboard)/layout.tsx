@@ -1,11 +1,14 @@
+import { getApiLimitCount } from "@/lib/api-limit"
 import { SidebarLayout } from "@/components/layouts/dashboard/sidebar-layout"
 
-const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
+    const apiLimitCount = await getApiLimitCount();
+
     return (
         <div className="h-full relative">
             <div className="md:flex md:w-72 md:fixed md:flex-col md:inset-y-0 bg-gray-900  text-white" >
                 <div>
-                   <SidebarLayout/>
+                   <SidebarLayout apiLimitCount={apiLimitCount}/>
                 </div>
             </div>
             <main className="md:pl-72"> 

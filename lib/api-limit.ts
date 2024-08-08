@@ -31,7 +31,6 @@ export const increaseApiLimit = async () => {
     }
 }
 
-
 export const checkApiLimit = async () => {
     const {userId} = auth();
 
@@ -49,3 +48,23 @@ export const checkApiLimit = async () => {
         false;
     }
 }
+
+export const getApiLimitCount = async () => {
+    const {userId} = auth();
+
+    if (!userId) {
+        return 0;
+    }
+
+    const userApiLimit = await db.userApiLimit.findUnique({
+        where: {userId: userId}
+    })
+
+    if (!userApiLimit) {
+        return 0;
+    }
+
+    return userApiLimit.count;
+}
+
+

@@ -13,13 +13,14 @@ import { useUser } from "@clerk/nextjs";
 import { usePathname } from 'next/navigation'
 
 
-import { 
-  Sidebar, 
+import {
+  Sidebar,
   SidebarBody,
-  SidebarLink 
+  SidebarLink
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "../User-Avatar/user-avatar";
+import FreeCounter from "../free-counter/FreeCounter";
 
 
 const montserrat = Montserrat({
@@ -27,7 +28,13 @@ const montserrat = Montserrat({
   subsets: ["latin"]
 });
 
-export function SidebarLayout() {
+interface SideBarProps {
+  apiLimitCount: number;
+}
+
+export function SidebarLayout({
+  apiLimitCount = 0
+}: SideBarProps) {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
   const links = [
@@ -45,16 +52,16 @@ export function SidebarLayout() {
         <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
-   
+
   ];
   const [open, setOpen] = useState(false);
 
-  
+
   return (
     <div
       className={cn(
         "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
-        "md:h-screen" 
+        "md:h-screen"
       )}
     >
       <Sidebar open={open} setOpen={setOpen} animate={false}>
@@ -65,7 +72,7 @@ export function SidebarLayout() {
             </>
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} pathName={pathname}/>
+                <SidebarLink key={idx} link={link} pathName={pathname} />
               ))}
             </div>
           </div>
@@ -80,9 +87,9 @@ export function SidebarLayout() {
               }}
             />
           </div>
+          <FreeCounter apiLimitCount={apiLimitCount} />
         </SidebarBody>
       </Sidebar>
-      
     </div>
   );
 }
