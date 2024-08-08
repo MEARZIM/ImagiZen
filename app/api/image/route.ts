@@ -36,7 +36,7 @@ export async function POST(
         }
 
         const freeTrial = await checkApiLimit();
-        const isPro = checkSubscription();
+        const isPro = await checkSubscription();
 
         if (!freeTrial && !isPro) {
             return new NextResponse("Free trial is expired", { status: 403 });
