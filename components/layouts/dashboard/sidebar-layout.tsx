@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Montserrat } from 'next/font/google'
 import { useUser } from "@clerk/nextjs";
 import { usePathname } from 'next/navigation'
+import { LuCrown } from "react-icons/lu";
 
 
 import {
@@ -21,6 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "../User-Avatar/user-avatar";
 import FreeCounter from "../free-counter/FreeCounter";
+import { Settings } from "lucide-react";
 
 
 const montserrat = Montserrat({
@@ -30,10 +32,12 @@ const montserrat = Montserrat({
 
 interface SideBarProps {
   apiLimitCount: number;
+  isPro: boolean;
 }
 
 export function SidebarLayout({
-  apiLimitCount = 0
+  apiLimitCount = 0,
+  isPro = false
 }: SideBarProps) {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
@@ -50,6 +54,13 @@ export function SidebarLayout({
       href: "/user-profile",
       icon: (
         <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Settings",
+      href: "/settings",
+      icon: (
+        <Settings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
 
@@ -76,7 +87,7 @@ export function SidebarLayout({
               ))}
             </div>
           </div>
-          <div>
+          <div className="flex items-center gap-x-2">
             <SidebarLink
               link={{
                 label: `${user?.firstName} ${user?.lastName}`,
@@ -86,8 +97,15 @@ export function SidebarLayout({
                 ),
               }}
             />
+
+            {
+              isPro && (<>
+                <LuCrown color="orange" size={25} />
+              </>
+              )
+            }
           </div>
-          <FreeCounter apiLimitCount={apiLimitCount} />
+          <FreeCounter apiLimitCount={apiLimitCount} isPro={isPro} />
         </SidebarBody>
       </Sidebar>
     </div>

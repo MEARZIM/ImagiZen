@@ -5,6 +5,7 @@ import {
     increaseApiLimit,
     checkApiLimit
 } from "@/lib/api-limit"
+import { checkSubscription } from '@/lib/subscription';
 
 
 export async function POST(
@@ -35,12 +36,15 @@ export async function POST(
         }
 
         const freeTrial = await checkApiLimit();
+        const isPro = checkSubscription();
 
-        if (!freeTrial) {
+        if (!freeTrial && !isPro) {
             return new NextResponse("Free trial is expired", { status: 403 });
         }
 
-        await increaseApiLimit();
+        if (!isPro) {
+            await increaseApiLimit();
+        }
 
         return NextResponse.json("All Ok", { status: 200 });
 

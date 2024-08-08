@@ -1,3 +1,7 @@
+"use client"
+
+import axios from "axios";
+import { useState } from "react";
 import { Check, ImageIcon, Zap } from "lucide-react";
 
 import { Modal } from "./modal"
@@ -6,8 +10,10 @@ import { cn } from "@/lib/utils";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Button } from "./button";
 
+
 export const ProModal = () => {
     const proModal = useProModal();
+    const [loading, setLoading] = useState(false);
     const links = [
         {
             label: "Image Genetation",
@@ -19,6 +25,20 @@ export const ProModal = () => {
         },
     ];
 
+    const onSubscribe = async () => {
+        try {
+
+            setLoading(true);
+            const response = await axios.get("/api/stripe");
+            console.log(response);
+            window.location.href = response.data.url.url;
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <>
@@ -43,18 +63,19 @@ export const ProModal = () => {
                                     {link.label}
                                 </div>
                             </div>
-                            <Check className="text=primary w-5 h-5"/>
+                            <Check className="text=primary w-5 h-5" />
                         </Card>
                     ))
                 }
 
                 <div className="my-2 flex justify-end">
-                    <Button 
-                    className="bg-violet-600 hover:bg-violet-500 w-full"
-                    size="lg"
+                    <Button
+                        className="bg-violet-600 hover:bg-violet-500 w-full"
+                        size="lg"
+                        onClick={onSubscribe}
                     >
                         Upgrade
-                        <Zap className="w-4 h-4 ml-2 fill-white"/>
+                        <Zap className="w-4 h-4 ml-2 fill-white" />
                     </Button>
                 </div>
             </Modal>
