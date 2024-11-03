@@ -1,16 +1,25 @@
 import React from 'react'
+import { LogOut } from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
+import { Settings } from 'lucide-react'
 
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import Heading from '@/components/layouts/Heading/Heading'
 import { checkSubscription } from '@/lib/subscription';
-import { Settings } from 'lucide-react'
 import { SubscriptionButton } from '@/components/ui/subscription-button';
+import { Button } from '@/components/ui/button';
 
 const SettingsPage = async () => {
 
     const isPro = await checkSubscription();
 
     return (
-        <div className='my-10'>  
+        <div className='my-10'>
             <Heading
                 title='Settings'
                 description='Manage account settings'
@@ -22,10 +31,30 @@ const SettingsPage = async () => {
                 <div className='text-muted-foreground text-sm'>
                     {isPro ? 'You are currently on a Pro Plan' : 'You are currently on a Free Plan'}
                 </div>
-                
-                <SubscriptionButton isPro={isPro}/>
-            </div>
 
+                <SubscriptionButton isPro={isPro} />
+                <div>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <SignOutButton>
+                                    <Button
+                                        variant={"default"}
+                                    >
+                                        <div className='flex items-center gap-2'>
+                                            Logout
+                                            <LogOut className="h-4 w-4" />
+                                        </div>
+                                    </Button>
+                                </SignOutButton>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Logout</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
+            </div>
         </div>
     )
 }
