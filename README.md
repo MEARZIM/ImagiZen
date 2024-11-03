@@ -34,13 +34,13 @@ A web-based platform for generating AI-powered images with ease. imagiZen allows
 ### Clone the project
 
 ```bash
-  git clone https://github.com/MEARZIM/musefinder.git
+  https://github.com/MEARZIM/ImagiZen.git
 ```
 
 ### Go to the project directory
 
 ```bash
-  cd musefinder
+  cd ImagiZen
 ```
 
 ### Start the server
